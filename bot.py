@@ -1,6 +1,7 @@
 import os
 import logging
 import io
+import asyncio
 from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
@@ -362,7 +363,14 @@ def main():
     # Start the bot
     logger.info("🚀 Bot is starting...")
     
-    # Run the bot (this will block until interrupted)
+    # Fix for Python 3.14 event loop issue
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    
+    # Run the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
