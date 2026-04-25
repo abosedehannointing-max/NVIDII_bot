@@ -80,8 +80,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "*Common issues:*\n"
         "• If generation fails, try a shorter prompt (under 200 characters)\n"
         "• Avoid special characters or emojis in prompts\n"
-        "• Use /cancel if the bot stops responding to you\n\n"
-        "*Need support?* Contact @your_support_handle"
+        "• Use /cancel if the bot stops responding to you\n"
     )
     await update.message.reply_text(help_msg, parse_mode='Markdown')
 
@@ -197,7 +196,7 @@ async def handle_size_selection(update: Update, context: ContextTypes.DEFAULT_TY
     user_sessions[user_id]['dimensions'] = (width, height)
     
     # Send processing message
-    processing_msg = await query.edit_message_text(
+    await query.edit_message_text(
         f"🎨 *Generating your image...*\n\n"
         f"📝 *Prompt:* {user_sessions[user_id]['prompt'][:100]}...\n"
         f"📐 *Size:* {SIZE_NAMES.get(size_choice, size_choice)} ({width}×{height})\n\n"
@@ -362,7 +361,6 @@ def main():
     
     # Start the bot
     logger.info("🚀 Bot is starting...")
-    logger.info(f"Bot username: @{application.bot.username}" if application.bot.username else "Bot username not set")
     
     # Run the bot (this will block until interrupted)
     application.run_polling(allowed_updates=Update.ALL_TYPES)
